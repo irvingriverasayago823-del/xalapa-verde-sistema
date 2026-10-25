@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Xalapa Verde · Plataforma Comunitaria por el Clima</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <div class="app">
+    <header class="brand-bar">
+      <a href="#" class="brand" id="brand-home">
+        <svg class="leaf" viewBox="0 0 64 64" aria-hidden="true">
+          <path fill="#2d8a4e" d="M10 34c18-28 44-28 48-28-2 18-4 42-28 48C12 58 8 44 10 34z"/>
+          <path fill="#0f3d28" d="M18 36c10-2 20-10 28-22-8 18-18 26-28 28z" opacity=".35"/>
+        </svg>
+        <div>
+          <h1>XALAPA <span>VERDE</span></h1>
+          <small>Plataforma Comunitaria por el Clima</small>
+        </div>
+      </a>
+      <div class="brand-actions">
+        <div id="guest-actions">
+          <button class="btn btn-ghost btn-guia">Guía de inicio</button>
+        </div>
+        <div id="logged-actions" class="hidden" style="display:flex;gap:10px;align-items:center">
+          <span class="user-chip" id="user-chip"></span>
+          <button class="btn btn-ghost btn-guia">Guía</button>
+          <button class="btn btn-ghost" id="btn-logout">Cerrar sesión</button>
+        </div>
+      </div>
+    </header>
+
+    <main class="wrap">
+      <!-- 1. Bienvenida -->
+      <section id="view-welcome" class="view">
+        <div class="hero">
+          <div class="hero-copy">
+            <div class="inner">
+              <p class="tag">Pequeñas acciones, grandes cambios</p>
+              <h2>Bienvenido a Xalapa Verde</h2>
+              <p>Calcula tu huella de carbono, compara tus resultados con la referencia municipal y participa en campañas de movilidad, reciclaje y reforestación.</p>
+              <div class="cta">
+                <button class="btn btn-primary" id="btn-ir-login">Iniciar sesión</button>
+                <button class="btn btn-white" id="btn-ir-registro">Crear cuenta</button>
+              </div>
+            </div>
+          </div>
+          <aside class="auth-card">
+            <h2>¿Qué puedes hacer?</h2>
+            <p class="muted">Función principal: calcular tu huella mensual en CO₂e a partir de energía, agua, transporte y residuos.</p>
+            <ul>
+              <li>Registro y perfil seguro</li>
+              <li>Historial de cálculos y metas</li>
+              <li>Campañas del Ayuntamiento</li>
+              <li>Reportes individuales y colectivos</li>
+            </ul>
+            <div class="demo-box">
+              <strong>Cuentas de demostración</strong><br>
+              Ciudadano: ciudadano@xalapaverde.mx / ciudadano123<br>
+              Administrador: admin@xalapaverde.mx / admin123
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <!-- 2. Login -->
+      <section id="view-login" class="view hidden">
+        <div class="hero">
+          <div class="hero-copy">
+            <div class="inner">
+              <h2>Bienvenido de nuevo</h2>
+              <p>Ingresa para calcular tu huella y unirte a las campañas activas de Xalapa.</p>
+            </div>
+          </div>
+          <form class="auth-card form" id="form-login">
+            <h2>Inicio de sesión</h2>
+            <p class="muted">Usa tu correo registrado.</p>
+            <div id="login-alert" class="alert hidden"></div>
+            <label>Correo electrónico<input id="login-correo" type="email" required placeholder="tucorreo@ejemplo.com"></label>
+            <label>Contraseña<input id="login-pass" type="password" required></label>
+            <button class="btn btn-primary btn-block">Entrar</button>
+            <p class="muted">¿No tienes cuenta? <a href="#" id="link-registro">Regístrate</a></p>
+          </form>
+        </div>
+      </section>
+
+      <!-- 3. Registro -->
+      <section id="view-registro" class="view hidden">
+        <div class="hero">
+          <div class="hero-copy">
+            <div class="inner">
+              <h2>Únete a la comunidad</h2>
+              <p>Crea tu cuenta ciudadana para guardar historial, metas e inscripciones.</p>
+            </div>
+          </div>
+          <form class="auth-card form" id="form-registro">
+            <h2>Registro de usuario</h2>
+            <div id="reg-alert" class="alert hidden"></div>
+            <label>Nombre completo<input id="reg-nombre" required></label>
+            <label>Correo<input id="reg-correo" type="email" required></label>
+            <label>Colonia<input id="reg-colonia" placeholder="Ánimas, Centro..."></label>
+            <label>Contraseña<input id="reg-pass" type="password" required minlength="6"></label>
+            <label>Confirmar contraseña<input id="reg-pass2" type="password" required></label>
+            <button class="btn btn-primary btn-block">Registrarme</button>
+            <p class="muted">¿Ya tienes cuenta? <a href="#" id="link-login">Inicia sesión</a></p>
+          </form>
+        </div>
+      </section>
+
+      <!-- Vistas con sesión iniciada -->
+      <section id="view-menu" class="view hidden">
+        <div class="shell">
+          <aside class="sidebar" data-sidebar></aside>
+          <div class="panel">
+            <h2>Menú principal</h2>
+            <p class="muted">Elige una tarea. La función principal está en Huella de carbono.</p>
+            <div class="grid-4" id="home-stats"></div>
+            <p style="margin-top:18px">Pequeñas acciones, grandes cambios por un Xalapa más verde.</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="view-huella" class="view hidden">
+        <div class="shell">
+          <aside class="sidebar" data-sidebar></aside>
+          <div class="panel">
+            <h2>Huella de carbono</h2>
+            <p class="muted">Captura tus consumos del último mes. Factores vigentes tipo SEMARNAT/IPCC (editables por el administrador).</p>
+            <div id="huella-alert" class="alert hidden"></div>
+            <div class="grid-2">
+              <form class="form" id="form-huella">
+                <label>Energía eléctrica (kWh/mes)<input id="h-kwh" type="number" min="0" step="0.1" required placeholder="Ej. 180"></label>
+                <label>Agua (m³/mes)<input id="h-m3" type="number" min="0" step="0.1" required placeholder="Ej. 28"></label>
+                <label>Transporte
+                  <select id="h-tipo">
+                    <option value="auto">Automóvil</option>
+                    <option value="moto">Motocicleta</option>
+                    <option value="autobus">Autobús</option>
+                    <option value="bici">Bicicleta</option>
+                    <option value="caminar">Caminar</option>
+                  </select>
+                </label>
+                <label>Distancia (km/mes)<input id="h-km" type="number" min="0" step="0.1" required></label>
+                <label>Residuos (kg/mes)<input id="h-kg" type="number" min="0" step="0.1" required></label>
+                <label>¿Separas residuos?
+                  <select id="h-separa"><option value="si">Sí</option><option value="no">No</option></select>
+                </label>
+                <button class="btn btn-primary">Calcular huella</button>
+              </form>
+              <div id="resultado-box" class="hidden">
+                <div class="stat"><b id="huella-total">—</b><span>Resultado del periodo mensual</span></div>
+                <div class="bars" id="huella-bars"></div>
+                <p id="huella-cmp" class="muted"></p>
+                <div class="reco" id="huella-reco"></div>
+                <form class="form" id="form-meta" style="margin-top:12px">
+                  <h3>Meta de reducción</h3>
+                  <label>Objetivo (kg CO₂e/mes)<input id="meta-valor" type="number" min="1" required></label>
+                  <label>Fecha límite<input id="meta-fecha" type="date" required></label>
+                  <div class="progress"><i id="meta-bar"></i></div>
+                  <p class="hint" id="meta-estado"></p>
+                  <button class="btn btn-ghost">Guardar meta</button>
+                </form>
+              </div>
+            </div>
+            <h3>Historial</h3>
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>Fecha</th><th>Energía</th><th>Agua</th><th>Transporte</th><th>Residuos</th><th>Total</th></tr></thead>
+                <tbody id="historial-body"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="view-campanas" class="view hidden">
+        <div class="shell">
+          <aside class="sidebar" data-sidebar></aside>
+          <div class="panel">
+            <h2>Campañas comunitarias</h2>
+            <p class="muted">Movilidad sostenible, reciclaje y reforestación.</p>
+            <div class="cards" id="campanas-list"></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="view-campana-detalle" class="view hidden">
+        <div class="shell">
+          <aside class="sidebar" data-sidebar></aside>
+          <div class="panel">
+            <button class="btn btn-ghost" data-nav="campanas">← Volver</button>
+            <div class="grid-2" style="margin-top:12px">
+              <img id="cd-img" alt="Campaña" style="width:100%;border-radius:16px;height:260px;object-fit:cover">
+              <div>
+                <h2 id="cd-title"></h2>
+                <p class="muted" id="cd-meta"></p>
+                <p id="cd-desc"></p>
+                <p id="cd-cupo"></p>
+                <div id="cd-alert" class="alert hidden"></div>
+                <button class="btn btn-primary" id="cd-inscribir">Inscribirme</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="view-plantones" class="view hidden">
+        <div class="shell">
+          <aside class="sidebar" data-sidebar></aside>
+          <div class="panel">
+            <h2>Jornada de plantones</h2>
+            <p class="muted">Reforestación comunitaria en El Haya.</p>
+            <div class="grid-2">
+              <img src="https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?auto=format&fit=crop&w=1200&q=70" alt="Plantones" style="border-radius:16px;height:280px;width:100%;object-fit:cover">
+              <div>
+                <p id="pl-fecha"></p>
+                <p id="pl-cupo"></p>
+                <ul>
+                  <li>Llevar calzado cerrado, gorra y agua.</li>
+                  <li>El Ayuntamiento proporciona planta nativa y herramientas.</li>
+                  <li>La inscripción es única por ciudadano.</li>
+                </ul>
+                <button class="btn btn-primary" id="pl-inscribir">Reservar lugar</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="view-admin" class="view hidden">
+        <div class="shell">
+          <aside class="sidebar" data-sidebar></aside>
+          <div class="panel">
+            <h2>Administración</h2>
+            <p class="muted">Gestión de campañas, factores de emisión y referencia municipal. Los cálculos previos no se alteran al cambiar factores.</p>
+            <div id="admin-alert" class="alert hidden"></div>
+            <h3>Campañas</h3>
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>Título</th><th>Tipo</th><th>Fecha</th><th>Estado</th><th></th></tr></thead>
+                <tbody id="admin-campanas"></tbody>
+              </table>
+            </div>
+            <form class="form" id="form-campana-nueva">
+              <h3>Nueva campaña</h3>
+              <label>Título<input id="n-titulo" required></label>
+              <label>Tipo
+                <select id="n-tipo">
+                  <option>Movilidad sostenible</option>
+                  <option>Reciclaje</option>
+                  <option>Reforestación</option>
+                </select>
+              </label>
+              <label>Descripción<textarea id="n-desc" rows="2" required></textarea></label>
+              <div class="grid-2">
+                <label>Fecha<input id="n-fecha" type="date" required></label>
+                <label>Lugar<input id="n-lugar" required></label>
+              </div>
+              <label>Cupo<input id="n-cupo" type="number" min="1" value="50"></label>
+              <button class="btn btn-primary">Publicar campaña</button>
+            </form>
+            <div class="grid-2" style="margin-top:18px">
+              <form class="form" id="form-factores">
+                <h3>Factores de emisión (kg CO₂e)</h3>
+                <label>kWh electricidad<input id="f-energia" type="number" step="0.001" min="0"></label>
+                <label>m³ de agua<input id="f-agua" type="number" step="0.001" min="0"></label>
+                <label>km automóvil<input id="f-auto" type="number" step="0.001" min="0"></label>
+                <label>kg residuos<input id="f-residuos" type="number" step="0.001" min="0"></label>
+                <button class="btn btn-ghost">Guardar factores</button>
+              </form>
+              <form class="form" id="form-ref">
+                <h3>Referencia municipal (kg CO₂e/mes)</h3>
+                <label>Energía<input id="r-energia" type="number" step="0.1"></label>
+                <label>Agua<input id="r-agua" type="number" step="0.1"></label>
+                <label>Transporte<input id="r-transporte" type="number" step="0.1"></label>
+                <label>Residuos<input id="r-residuos" type="number" step="0.1"></label>
+                <button class="btn btn-ghost">Guardar referencia</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="view-usuarios" class="view hidden">
+        <div class="shell">
+          <aside class="sidebar" data-sidebar></aside>
+          <div class="panel">
+            <h2>Gestión de usuarios</h2>
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>Nombre</th><th>Correo</th><th>Rol</th><th>Colonia</th><th>Cálculos</th></tr></thead>
+                <tbody id="users-body"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="view-reportes" class="view hidden">
+        <div class="shell">
+          <aside class="sidebar" data-sidebar></aside>
+          <div class="panel">
+            <h2 id="report-title">Reportes</h2>
+            <div class="grid-4" id="report-stats"></div>
+            <div id="report-extra" style="margin-top:16px"></div>
+            <div style="display:flex;gap:10px;margin-top:16px">
+              <button class="btn btn-primary" id="btn-export-csv">Exportar CSV</button>
+              <button class="btn btn-ghost" id="btn-export-pdf">Imprimir / PDF</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="view-perfil" class="view hidden">
+        <div class="shell">
+          <aside class="sidebar" data-sidebar></aside>
+          <div class="panel">
+            <h2>Mi perfil</h2>
+            <div id="perfil-alert" class="alert hidden"></div>
+            <form class="form" id="form-perfil" style="max-width:480px">
+              <label>Nombre<input id="p-nombre" required></label>
+              <label>Correo<input id="p-correo" disabled></label>
+              <label>Colonia<input id="p-colonia"></label>
+              <label>Nueva contraseña (opcional)<input id="p-pass" type="password"></label>
+              <button class="btn btn-primary">Guardar cambios</button>
+            </form>
+          </div>
+        </div>
+      </section>
+    </main>
+    <p class="footer-note">Xalapa Verde · ITSX · Ingeniería de Software · Prototipo funcional 2026</p>
+  </div>
+
+  <template id="sidebar-tpl">
+    <button class="nav-btn" data-nav="menu"><span class="nav-ico">⌂</span> Inicio</button>
+    <button class="nav-btn" data-nav="huella"><span class="nav-ico">☁</span> Huella de carbono</button>
+    <button class="nav-btn" data-nav="campanas"><span class="nav-ico">⚑</span> Campañas</button>
+    <button class="nav-btn" data-nav="plantones"><span class="nav-ico">🌱</span> Plantones</button>
+    <button class="nav-btn" data-nav="reportes"><span class="nav-ico">◔</span> Reportes</button>
+    <button class="nav-btn admin-only hidden" data-nav="admin"><span class="nav-ico">⚙</span> Administración</button>
+    <button class="nav-btn admin-only hidden" data-nav="usuarios"><span class="nav-ico">👥</span> Usuarios</button>
+    <button class="nav-btn" data-nav="perfil"><span class="nav-ico">☺</span> Mi perfil</button>
+  </template>
+
+  <script>
+    document.querySelectorAll("[data-sidebar]").forEach((el) => {
+      el.innerHTML = document.getElementById("sidebar-tpl").innerHTML;
+    });
+  </script>
+  <script src="js/app.js"></script>
+</body>
+</html>
