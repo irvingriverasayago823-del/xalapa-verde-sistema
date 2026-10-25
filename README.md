@@ -15,4 +15,4 @@ Plataforma web diseñada para el cálculo de huella de carbono mensual en CO₂e
 - Control de versiones con Git y GitHub
 
 ---
-*ITSX · Ingeniería en Sistemas Computacionales · Prototipo funcional 2026*[span_8](start_span)[span_8](end_span)
+*ITSX · Ingeniería en Sistemas Computacionales · Prototipo funcional 2026*
