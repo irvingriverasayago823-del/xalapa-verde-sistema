@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Xalapa Verde - Plataforma Comunitaria por el Clima</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+    <header>
+        <a href="#" class="brand" onclick="switchView('welcome')">
+            <div class="brand-icon"></div>
+            <div class="brand-title">
+                <h1>XALAPA <span>VERDE</span></h1>
+                <small>Plataforma Comunitaria por el Clima</small>
+            </div>
+        </a>
+        <div class="header-actions" id="header-guest">
+            <button class="btn" onclick="alert('Abriendo guía de inicio...')">Guía de inicio</button>
+        </div>
+        <div class="header-actions" id="header-user" style="display: none;">
+            <span id="user-display-name" style="font-size: 0.85rem; color: #555;">Usuario</span>
+            <button class="btn" onclick="switchView('dashboard')">Guía</button>
+            <button class="btn" onclick="logout()">Cerrar sesión</button>
+        </div>
+    </header>
+
+    <!-- 1. VISTA BIENVENIDA -->
+    <div id="view-welcome" class="main-container view active">
+        <div class="hero-banner">
+            <div class="tag">Pequeñas acciones, grandes cambios</div>
+            <h2>Bienvenido a Xalapa Verde</h2>
+            <p>Calcula tu huella de carbono, compara tus resultados con la referencia municipal y participa en campañas de movilidad, reciclaje y reforestación.</p>
+            <div class="hero-buttons">
+                <button class="btn btn-primary" onclick="switchView('login')">Iniciar sesión</button>
+                <button class="btn" style="background: white; color: #333;" onclick="switchView('register')">Crear cuenta</button>
+            </div>
+        </div>
+        <div class="info-panel">
+            <h3>¿Qué puedes hacer?</h3>
+            <p style="font-size: 0.85rem; color: #666;">Función principal: calcular tu huella mensual en CO₂e a partir de energía, agua, transporte y residuos.</p>
+            <ul>
+                <li>Registro y perfil seguro</li>
+                <li>Historial de cálculos y metas</li>
+                <li>Campañas del Ayuntamiento</li>
+                <li>Reportes individuales y colectivos</li>
+            </ul>
+            <div class="demo-box">
+                <strong>Cuentas de demostración</strong><br>
+                Ciudadano: ciudadano@xalapaverde.mx / ciudadano123<br>
+                Administrador: admin@xalapaverde.mx / admin123
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. VISTA REGISTRO -->
+    <div id="view-register" class="main-container view">
+        <div class="hero-banner">
+            <div class="tag">Comunidad</div>
+            <h2>Únete a la comunidad</h2>
+            <p>Crea tu cuenta ciudadana para guardar historial, metas e inscripciones.</p>
+        </div>
+        <div class="info-panel">
+            <h3>Registro de usuario</h3>
+            <div class="form-group">
+                <label>Nombre completo</label>
+                <input type="text" class="form-control" id="reg-name" value="Irving Rivera Sayago">
+            </div>
+            <div class="form-group">
+                <label>Correo</label>
+                <input type="email" class="form-control" id="reg-email" value="irvingriverasayago123@gmail.com">
+            </div>
+            <div class="form-group">
+                <label>Colonia</label>
+                <input type="text" class="form-control" value="Progreso">
+            </div>
+            <div class="form-group">
+                <label>Contraseña</label>
+                <input type="password" class="form-control" value="••••••••">
+            </div>
+            <button class="btn btn-primary" style="width: 100%;" onclick="loginSuccess()">Registrarme</button>
+            <p style="font-size: 0.8rem; margin-top: 15px; text-align: center;">¿Ya tienes cuenta? <a href="#" onclick="switchView('login')" style="color: var(--primary);">Inicia sesión</a></p>
+        </div>
+    </div>
+
+    <!-- 3. VISTA LOGIN -->
+    <div id="view-login" class="main-container view">
+        <div class="hero-banner">
+            <div class="tag">Acceso</div>
+            <h2>Iniciar sesión</h2>
+            <p>Ingresa tus credenciales para acceder a tus cálculos y campañas.</p>
+        </div>
+        <div class="info-panel">
+            <h3>Iniciar sesión</h3>
+            <div class="form-group">
+                <label>Correo</label>
+                <input type="email" class="form-control" id="login-email" value="ciudadano@xalapaverde.mx">
+            </div>
+            <div class="form-group">
+                <label>Contraseña</label>
+                <input type="password" class="form-control" value="ciudadano123">
+            </div>
+            <button class="btn btn-primary" style="width: 100%;" onclick="loginSuccess()">Entrar</button>
+        </div>
+    </div>
+
+    <!-- 4. DASHBOARD / SISTEMA INTERNO -->
+    <div id="view-app" class="main-container view" style="gap: 20px;">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <ul class="sidebar-menu">
+                <li id="menu-inicio" class="active" onclick="switchTab('inicio')">🏠 Inicio</li>
+                <li id="menu-huella" onclick="switchTab('huella')">🌱 Huella de carbono</li>
+                <li id="menu-campañas" onclick="switchTab('campañas')">📢 Campañas</li>
+                <li id="menu-plantones" onclick="switchTab('plantones')">🌿 Plantones</li>
+                <li id="menu-reportes" onclick="switchTab('reportes')">📊 Reportes</li>
+                <li id="menu-perfil" onclick="switchTab('perfil')">👤 Mi perfil</li>
+            </ul>
+        </div>
+
+        <!-- Contenido dinámico del dashboard -->
+        <div class="content-card">
+            <!-- TAB INICIO -->
+            <div id="tab-inicio" class="dashboard-tab">
+                <h2>Menú principal</h2>
+                <p style="font-size: 0.85rem; color: #666;">Elige una tarea. La función principal está en Huella de carbono.</p>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="number">—</div>
+                        <div class="label">kg CO₂e último cálculo</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="number">0</div>
+                        <div class="label">cálculos en historial</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="number">0</div>
+                        <div class="label">campañas inscritas</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="number">3</div>
+                        <div class="label">campañas activas</div>
+                    </div>
+                </div>
+                <p style="font-size: 0.85rem; color: #555; text-align: center; margin-top: 40px;">Pequeñas acciones, grandes cambios por un Xalapa más verde.</p>
+            </div>
+
+            <!-- TAB HUELLA DE CARBONO -->
+            <div id="tab-huella" class="dashboard-tab" style="display: none;">
+                <h2>Huella de carbono</h2>
+                <p style="font-size: 0.85rem; color: #666;">Captura tus consumos del último mes (Factores vigentes tipo SEMARNAT/IPCC).</p>
+                <div class="form-group">
+                    <label>Energía eléctrica (kWh/mes)</label>
+                    <input type="number" class="form-control" placeholder="Ej. 180">
+                </div>
+                <div class="form-group">
+                    <label>Agua (m³/mes)</label>
+                    <input type="number" class="form-control" placeholder="Ej. 28">
+                </div>
+                <div class="form-group">
+                    <label>Transporte</label>
+                    <select class="form-control"><option>Automóvil</option><option>Autobús</option><option>A pie / Bicicleta</option></select>
+                </div>
+                <div class="form-group">
+                    <label>Distancia (km/mes)</label>
+                    <input type="number" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label>Residuos (kg/mes)</label>
+                    <input type="number" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label>¿Separas residuos?</label>
+                    <select class="form-control"><option>Sí</option><option>No</option></select>
+                </div>
+                <button class="btn btn-primary" onclick="alert('¡Cálculo guardado con éxito!')">Calcular huella</button>
+            </div>
+
+            <!-- TAB CAMPAÑAS -->
+            <div id="tab-campañas" class="dashboard-tab" style="display: none;">
+                <h2>Campañas comunitarias</h2>
+                <p style="font-size: 0.85rem; color: #666;">Movilidad sostenible, reciclaje y reforestación.</p>
+                <div class="campaigns-grid">
+                    <div class="campaign-card">
+                        <div class="campaign-img" style="background-image: url('https://images.unsplash.com/photo-1485965120184-e220f721d03e?auto=format&fit=crop&w=400&q=80')"></div>
+                        <div class="campaign-body">
+                            <h4>Bici al trabajo</h4>
+                            <p>2026-11-08 · Parque Juárez, Xalapa</p>
+                            <button class="btn btn-primary" style="width: 100%;" onclick="switchTab('plantones')">Ver detalle</button>
+                        </div>
+                    </div>
+                    <div class="campaign-card">
+                        <div class="campaign-img" style="background-image: url('https://images.unsplash.com/photo-1532996122724-e3c354a0b15b?auto=format&fit=crop&w=400&q=80')"></div>
+                        <div class="campaign-body">
+                            <h4>Reciclatón municipal</h4>
+                            <p>2026-11-15 · Unidad Deportiva</p>
+                            <button class="btn btn-primary" style="width: 100%;">Ver detalle</button>
+                        </div>
+                    </div>
+                    <div class="campaign-card">
+                        <div class="campaign-img" style="background-image: url('https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?auto=format&fit=crop&w=400&q=80')"></div>
+                        <div class="campaign-body">
+                            <h4>Jornada de plantones</h4>
+                            <p>2026-11-22 · Parque El Haya</p>
+                            <button class="btn btn-primary" style="width: 100%;" onclick="switchTab('plantones')">Ver detalle</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB PLANTONES -->
+            <div id="tab-plantones" class="dashboard-tab" style="display: none;">
+                <h2>Jornada de plantones</h2>
+                <p style="font-size: 0.85rem; color: #666;">Reforestación comunitaria en El Haya.</p>
+                <div style="display: flex; gap: 20px; margin-top: 15px;">
+                    <div style="flex: 1; height: 180px; background: url('https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?auto=format&fit=crop&w=500&q=80') center/cover; border-radius: 8px;"></div>
+                    <div style="flex: 1;">
+                        <p style="font-size: 0.85rem; font-weight: bold;">2026-11-22 · Parque Ecológico El Haya</p>
+                        <p style="font-size: 0.8rem; color: #666;">0 de 60 plantones/lugar reservados</p>
+                        <ul style="font-size: 0.8rem; color: #555; padding-left: 15px;">
+                            <li>Llevar calzado cerrado, gorra y agua.</li>
+                            <li>El Ayuntamiento proporciona planta nativa y herramientas.</li>
+                        </ul>
+                        <button class="btn btn-primary" onclick="alert('¡Lugar reservado con éxito!')">Reservar lugar</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB REPORTES -->
+            <div id="tab-reportes" class="dashboard-tab" style="display: none;">
+                <h2>Mis estadísticas</h2>
+                <div class="stats-grid" style="grid-template-columns: repeat(4, 1fr);">
+                    <div class="stat-card"><div class="number">—</div><div class="label">última huella</div></div>
+                    <div class="stat-card"><div class="number">0</div><div class="label">cálculos</div></div>
+                    <div class="stat-card"><div class="number">0</div><div class="label">campañas</div></div>
+                    <div class="stat-card"><div class="number" style="font-size: 1rem;">sin meta</div><div class="label">estado de meta</div></div>
+                </div>
+                <p style="font-size: 0.85rem; color: #666;">Calcula tu huella para ver estadísticas.</p>
+                <button class="btn btn-primary">Exportar CSV</button>
+                <button class="btn">Imprimir / PDF</button>
+            </div>
+
+            <!-- TAB PERFIL -->
+            <div id="tab-perfil" class="dashboard-tab" style="display: none;">
+                <h2>Mi perfil</h2>
+                <div style="background: #eef4f0; padding: 10px; border-radius: 6px; font-size: 0.8rem; color: var(--primary-dark); margin-bottom: 15px;">Perfil actualizado.</div>
+                <div class="form-group"><label>Nombre</label><input type="text" class="form-control" value="Irving Rivera Sayago"></div>
+                <div class="form-group"><label>Correo</label><input type="email" class="form-control" value="irvingriverasayago123@gmail.com"></div>
+                <div class="form-group"><label>Colonia</label><input type="text" class="form-control" value="Progreso"></div>
+                <div class="form-group"><label>Nueva contraseña (opcional)</label><input type="password" class="form-control"></div>
+                <button class="btn btn-primary" onclick="alert('Perfil guardado exitosamente')">Guardar cambios</button>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        Xalapa Verde · ITSX · Ingeniería de Software - Prototipo funcional 2026
+    </footer>
+
+    <script src="js/app.js"></script>
+</body>
+</html>
