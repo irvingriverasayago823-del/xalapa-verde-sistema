@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Xalapa Verde — Plataforma Comunitaria por el Clima</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <!-- BARRA SUPERIOR -->
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="marca" id="btn-marca-inicio">
+        <span class="hoja-dot"></span>
+        <div>
+          <div class="marca-titulo">XALAPA VERDE</div>
+          <div class="marca-sub">Plataforma Comunitaria por el Clima</div>
+        </div>
+      </div>
+
+      <div class="topbar-acciones">
+        <span id="badge-usuario" class="badge-usuario" hidden></span>
+        <button type="button" id="btn-guia" class="btn-outline">Guía de inicio</button>
+        <button type="button" id="btn-logout-top" class="btn-outline" hidden>Cerrar sesión</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- PANTALLA 1: BIENVENIDA / LOGIN / REGISTRO -->
+  <main id="vista-acceso" class="pantalla-acceso">
+    <div class="grid-acceso">
+      <!-- Tarjeta izquierda con imagen de bosque -->
+      <section class="tarjeta-bosque">
+        <div class="bosque-overlay">
+          <span class="pill-tag">PEQUEÑAS ACCIONES, GRANDES CAMBIOS</span>
+          <h1 id="bosque-titulo">Bienvenido a Xalapa Verde</h1>
+          <p id="bosque-texto">
+            Calcula tu huella de carbono, compara tus resultados con la referencia municipal y participa en campañas de movilidad, reciclaje y reforestación.
+          </p>
+          <div class="bosque-botones">
+            <button type="button" id="btn-mostrar-login" class="btn-verde">Iniciar sesión</button>
+            <button type="button" id="btn-mostrar-registro" class="btn-blanco">Crear cuenta</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Tarjeta derecha: Info / Login / Registro -->
+      <section class="tarjeta-panel-derecho">
+        <!-- Estado A: ¿Qué puedes hacer? -->
+        <div id="box-info" class="subvista-acceso activa">
+          <h2>¿Qué puedes hacer?</h2>
+          <p class="subtexto">
+            Función principal: calcular tu huella mensual en CO₂e a partir de energía, agua, transporte y residuos.
+          </p>
+
+          <ul class="lista-caracteristicas">
+            <li>Registro y perfil seguro</li>
+            <li>Historial de cálculos y metas</li>
+            <li>Campañas del Ayuntamiento</li>
+            <li>Reportes individuales y colectivos</li>
+          </ul>
+
+          <div class="cuentas-demo">
+            <strong>Cuentas de demostración</strong>
+            <div>Ciudadano: <code>ciudadano@xalapaverde.mx</code> / <code>ciudadano123</code></div>
+            <div>Administrador: <code>admin@xalapaverde.mx</code> / <code>admin123</code></div>
+          </div>
+
+          <div id="alerta-acceso" class="alerta" hidden></div>
+        </div>
+
+        <!-- Estado B: Iniciar sesión -->
+        <form id="form-login" class="subvista-acceso form-stack" hidden>
+          <h2>Iniciar sesión</h2>
+          <p class="subtexto">Ingresa con tu cuenta para guardar tus cálculos, reportes y reservas.</p>
+
+          <label>
+            Correo electrónico
+            <input type="email" id="login-correo" placeholder="correo@ejemplo.com" required>
+          </label>
+          <label>
+            Contraseña
+            <input type="password" id="login-password" placeholder="••••••••" required>
+          </label>
+
+          <button type="submit" class="btn-verde btn-full">Iniciar sesión</button>
+          <p class="pie-form">
+            ¿No tienes cuenta?
+            <button type="button" id="link-ir-registro" class="btn-link">Crear cuenta</button>
+          </p>
+          <div id="alerta-login" class="alerta" hidden></div>
+        </form>
+
+        <!-- Estado C: Registro de usuario -->
+        <form id="form-registro" class="subvista-acceso form-stack" hidden>
+          <h2>Registro de usuario</h2>
+          <p class="subtexto">Crea tu cuenta ciudadana para guardar historial, metas e inscripciones.</p>
+
+          <label>
+            Nombre completo
+            <input type="text" id="reg-nombre" placeholder="Ej. Irving Rivera Sayago" required>
+          </label>
+          <label>
+            Correo
+            <input type="email" id="reg-correo" placeholder="correo@ejemplo.com" required>
+          </label>
+          <label>
+            Colonia
+            <input type="text" id="reg-colonia" placeholder="Ej. Progreso o Campo de Tiro">
+          </label>
+          <label>
+            Contraseña
+            <input type="password" id="reg-password" placeholder="Mínimo 6 caracteres" required>
+          </label>
+          <label>
+            Confirmar contraseña
+            <input type="password" id="reg-password2" placeholder="Repite tu contraseña" required>
+          </label>
+
+          <button type="submit" class="btn-verde btn-full">Registrarme</button>
+          <p class="pie-form">
+            ¿Ya tienes cuenta?
+            <button type="button" id="link-ir-login" class="btn-link">Inicia sesión</button>
+          </p>
+          <div id="alerta-registro" class="alerta" hidden></div>
+        </form>
+      </section>
+    </div>
+  </main>
+
+  <!-- PANTALLA 2: APLICACIÓN CON MENÚ LATERAL -->
+  <div id="vista-app" class="app-layout" hidden>
+    <aside class="sidebar">
+      <nav class="sidebar-nav">
+        <button type="button" class="nav-item activo" data-tab="tab-inicio">Inicio</button>
+        <button type="button" class="nav-item" data-tab="tab-huella">Huella de carbono</button>
+        <button type="button" class="nav-item" data-tab="tab-campanas">Campañas</button>
+        <button type="button" class="nav-item" data-tab="tab-plantones">Plantones</button>
+        <button type="button" class="nav-item" data-tab="tab-reportes">Reportes</button>
+        <button type="button" class="nav-item" data-tab="tab-perfil">Mi perfil</button>
+      </nav>
+    </aside>
+
+    <section class="contenido-principal">
+      <!-- TAB 1: INICIO -->
+      <div id="tab-inicio" class="tab-panel activa">
+        <div class="tarjeta-seccion">
+          <h2>Menú principal</h2>
+          <p class="subtexto">Elige una tarea. La función principal está en Huella de carbono.</p>
+
+          <div class="grid-kpis">
+            <div class="kpi-card">
+              <div id="kpi-ultima-huella" class="kpi-valor">—</div>
+              <div class="kpi-etiqueta">kg CO₂e último cálculo</div>
+            </div>
+            <div class="kpi-card">
+              <div id="kpi-total-calculos" class="kpi-valor">0</div>
+              <div class="kpi-etiqueta">cálculos en historial</div>
+            </div>
+            <div class="kpi-card">
+              <div id="kpi-campanas-inscritas" class="kpi-valor">0</div>
+              <div class="kpi-etiqueta">campañas inscritas</div>
+            </div>
+            <div class="kpi-card">
+              <div id="kpi-campanas-activas" class="kpi-valor">3</div>
+              <div class="kpi-etiqueta">campañas activas</div>
+            </div>
+          </div>
+
+          <p class="frase-cierre">Pequeñas acciones, grandes cambios por un Xalapa más verde.</p>
+        </div>
+      </div>
+
+      <!-- TAB 2: HUELLA DE CARBONO -->
+      <div id="tab-huella" class="tab-panel">
+        <div class="tarjeta-seccion">
+          <h2>Huella de carbono</h2>
+          <p class="subtexto">Captura tus consumos del último mes. Factores vigentes tipo SEMARNAT/IPCC.</p>
+
+          <form id="form-huella" class="form-stack">
+            <label>
+              Energía eléctrica (kWh/mes)
+              <input type="number" step="any" id="huella-energia" placeholder="Ej. 180" required>
+            </label>
+            <label>
+              Agua (m³/mes)
+              <input type="number" step="any" id="huella-agua" placeholder="Ej. 28" required>
+            </label>
+            <label>
+              Transporte
+              <select id="huella-tipo-transporte">
+                <option value="auto" selected>Automóvil</option>
+                <option value="bus">Transporte público / camión</option>
+                <option value="moto">Motocicleta</option>
+                <option value="bici">Bicicleta / caminata</option>
+              </select>
+            </label>
+            <label>
+              Distancia (km/mes)
+              <input type="number" step="any" id="huella-distancia" placeholder="Ej. 250" required>
+            </label>
+            <label>
+              Residuos (kg/mes)
+              <input type="number" step="any" id="huella-residuos" placeholder="Ej. 35" required>
+            </label>
+            <label>
+              ¿Separas residuos?
+              <select id="huella-separa">
+                <option value="si" selected>Sí</option>
+                <option value="no">No</option>
+              </select>
+            </label>
+            <button type="submit" class="btn-verde btn-full">Calcular huella</button>
+          </form>
+
+          <div id="resultado-huella" class="caja-resultado" hidden></div>
+          <div id="alerta-huella" class="alerta" hidden></div>
+
+          <h3 class="titulo-bloque">Historial</h3>
+          <div class="tabla-wrap">
+            <table class="tabla-historial">
+              <thead>
+                <tr>
+                  <th>FECHA</th>
+                  <th>ENERGÍA</th>
+                  <th>AGUA</th>
+                  <th>TRANSPORTE</th>
+                  <th>RESIDUOS</th>
+                  <th>TOTAL</th>
+                </tr>
+              </thead>
+              <tbody id="tbody-historial-huella">
+                <tr><td colspan="6">Cargando historial...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 3: CAMPAÑAS -->
+      <div id="tab-campanas" class="tab-panel">
+        <div class="tarjeta-seccion">
+          <h2>Campañas comunitarias</h2>
+          <p class="subtexto">Movilidad sostenible, reciclaje y reforestación.</p>
+          <div id="grid-campanas" class="grid-campanas">
+            <p>Cargando campañas...</p>
+          </div>
+          <div id="alerta-campanas" class="alerta" hidden></div>
+        </div>
+      </div>
+
+      <!-- TAB 4: PLANTONES -->
+      <div id="tab-plantones" class="tab-panel">
+        <div class="tarjeta-seccion">
+          <h2>Jornada de plantones</h2>
+          <p class="subtexto">Reforestación comunitaria en El Haya.</p>
+
+          <div class="planton-card">
+            <div class="planton-img-box" aria-hidden="true">🌿</div>
+            <div class="planton-info">
+              <div class="planton-meta">2026-11-22 · Parque Ecológico El Haya</div>
+              <div id="planton-cupo" class="planton-cupo">0 de 60 plantones/lugar reservados</div>
+              <ul class="lista-caracteristicas compacta">
+                <li>Llevar calzado cerrado, gorra y agua.</li>
+                <li>El Ayuntamiento proporciona planta nativa y herramientas.</li>
+                <li>La inscripción es única por ciudadano.</li>
+              </ul>
+              <button type="button" id="btn-reservar-planton" class="btn-verde">Reservar lugar</button>
+            </div>
+          </div>
+          <div id="alerta-plantones" class="alerta" hidden></div>
+        </div>
+      </div>
+
+      <!-- TAB 5: REPORTES -->
+      <div id="tab-reportes" class="tab-panel">
+        <div class="tarjeta-seccion">
+          <h2>Mis estadísticas y reportes</h2>
+          <p class="subtexto">Resumen de tu actividad y reportes ambientales registrados.</p>
+
+          <div class="grid-kpis">
+            <div class="kpi-card">
+              <div id="rep-ultima-huella" class="kpi-valor">—</div>
+              <div class="kpi-etiqueta">última huella</div>
+            </div>
+            <div class="kpi-card">
+              <div id="rep-total-calculos" class="kpi-valor">0</div>
+              <div class="kpi-etiqueta">cálculos</div>
+            </div>
+            <div class="kpi-card">
+              <div id="rep-total-campanas" class="kpi-valor">0</div>
+              <div class="kpi-etiqueta">campañas</div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-valor">sin meta</div>
+              <div class="kpi-etiqueta">estado de meta</div>
+            </div>
+          </div>
+
+          <div class="acciones-exportar">
+            <button type="button" id="btn-exportar-csv" class="btn-verde">Exportar CSV</button>
+            <button type="button" id="btn-imprimir-pdf" class="btn-outline-oscuro">Imprimir / PDF</button>
+          </div>
+
+          <h3 class="titulo-bloque">Registrar reporte ambiental</h3>
+          <form id="form-reporte" class="form-stack">
+            <label>
+              Categoría
+              <select id="categoria-reporte" required>
+                <option value="1">General</option>
+              </select>
+            </label>
+            <label>
+              Descripción
+              <textarea id="descripcion-reporte" rows="3" placeholder="Describe la situación ambiental en tu colonia..." required></textarea>
+            </label>
+            <button type="submit" class="btn-verde">Enviar reporte</button>
+          </form>
+          <div id="alerta-reportes" class="alerta" hidden></div>
+
+          <h3 class="titulo-bloque">Reportes registrados</h3>
+          <div id="lista-reportes-cards" class="grid-campanas">
+            <p>Cargando reportes...</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 6: MI PERFIL -->
+      <div id="tab-perfil" class="tab-panel">
+        <div class="tarjeta-seccion">
+          <h2>Mi perfil</h2>
+          <div id="alerta-perfil" class="alerta" hidden></div>
+
+          <form id="form-perfil" class="form-stack">
+            <label>
+              Nombre
+              <input type="text" id="perfil-nombre" required>
+            </label>
+            <label>
+              Correo
+              <input type="email" id="perfil-correo" required>
+            </label>
+            <label>
+              Colonia
+              <input type="text" id="perfil-colonia" placeholder="Ej. Progreso">
+            </label>
+            <label>
+              Nueva contraseña (opcional)
+              <input type="password" id="perfil-password" placeholder="Déjala vacía para conservar la actual">
+            </label>
+            <button type="submit" class="btn-verde btn-full">Guardar cambios</button>
+          </form>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- MODAL GUÍA DE INICIO -->
+  <div id="modal-guia" class="modal-backdrop" hidden>
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3>Guía rápida — Xalapa Verde</h3>
+        <button type="button" id="btn-cerrar-guia" class="btn-cerrar">✕</button>
+      </div>
+      <ol class="lista-guia">
+        <li>Crea tu cuenta o inicia sesión (puedes usar las cuentas de demostración o registrarte).</li>
+        <li>Ve a <strong>Huella de carbono</strong> para capturar tus consumos mensuales y guardar tu historial.</li>
+        <li>Consulta <strong>Campañas</strong> y <strong>Plantones</strong> para inscribirte o reservar tu lugar.</li>
+        <li>Usa <strong>Reportes</strong> para enviar incidencias ambientales o exportar tus datos en CSV/PDF.</li>
+      </ol>
+    </div>
+  </div>
+
+  <footer class="pie-pagina">
+    Xalapa Verde · ITSX · Ingeniería de Software · Prototipo funcional 2026
+  </footer>
+
+  <script src="js/app.js"></script>
+</body>
+</html>
